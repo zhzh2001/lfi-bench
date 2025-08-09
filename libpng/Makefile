@@ -2,8 +2,8 @@
 include ../common.mk
 
 # Benchmark-specific configuration
-RUNS   ?= 2
-WARMUP ?= 1
+RUNS   ?= 10
+WARMUP ?= 2
 
 TARGET_DIR := libpng
 
@@ -37,9 +37,7 @@ bench: pngtest.csv
 pngtest.csv: build-native build-lfi build-lfi-stores image.png
 	cat image.png > /dev/null #pull it into buffer cache
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv pngtest.csv \
-		-n 'LFI' 'lfi-run -- build-lfi/pngtest image.png' \
-		-n 'LFI-stores' 'lfi-run -- build-lfi-stores/pngtest image.png' \
-		-n 'Native' 'build-native/pngtest image.png'
+		-n 'libpng' 'build-native/pngtest image.png'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR) image.png

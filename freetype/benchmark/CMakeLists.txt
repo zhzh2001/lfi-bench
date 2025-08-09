@@ -20,8 +20,9 @@ set(BUILD_SHARED_LIBS OFF)
 
 # Link against the static freetype and its dependencies
 target_link_libraries(benchmark 
-    -static-pie
+    -static
     freetype 
-    z 
     png
+    z
+    m
 )

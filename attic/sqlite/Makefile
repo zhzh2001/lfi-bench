@@ -35,9 +35,9 @@ bench: sqlite.csv
 
 sqlite.csv: build
 	hyperfine --export-csv sqlite.csv --runs $(RUNS) --warmup $(WARMUP) \
-		-n 'LFI' 'lfi-run -- ./build-lfi/sqlite-bench/sqlite-bench' \
-		-n 'LFI-stores' 'lfi-run -- ./build-lfi-stores/sqlite-bench/sqlite-bench' \
-		-n 'Native' 'lfi-run -- ./build-native/sqlite-bench/sqlite-bench'
+		-n 'LFI' './build-lfi/sqlite-bench/sqlite-bench' \
+		-n 'LFI-stores' './build-lfi-stores/sqlite-bench/sqlite-bench' \
+		-n 'Native' './build-native/sqlite-bench/sqlite-bench'
 
 clean:
 	rm -rf sqlite-bench build-lfi build-lfi-stores build-native

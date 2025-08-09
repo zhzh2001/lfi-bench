@@ -2,7 +2,7 @@
 include ../common.mk
 
 # Benchmark-specific configuration
-RUNS   ?= 5
+RUNS   ?= 10
 WARMUP ?= 2
 
 TARGET_DIR := opus
@@ -36,15 +36,11 @@ bench: opus-encode.csv opus-decode.csv
 
 opus-encode.csv: opus-benchdata build-native build-lfi build-lfi-stores
 	hyperfine --export-csv opus-encode.csv --runs $(RUNS) --warmup $(WARMUP) \
-		-n 'LFI' 'lfi-run -- ./build-lfi/src/opus_demo -e voip 48000 2 96000 opus-benchdata/music_orig.wav /dev/null' \
-		-n 'LFI-stores' 'lfi-run -- ./build-lfi-stores/src/opus_demo -e voip 48000 2 96000 opus-benchdata/music_orig.wav /dev/null' \
-		-n 'Native' './build-native/src/opus_demo -e voip 48000 2 96000 opus-benchdata/music_orig.wav /dev/null'
+		-n 'opus-enc' './build-native/src/opus_demo -e voip 48000 2 96000 opus-benchdata/music_orig.wav /dev/null'
 
 opus-decode.csv: opus-benchdata build-native build-lfi build-lfi-stores
 	hyperfine --export-csv opus-decode.csv --runs $(RUNS) --warmup $(WARMUP) \
-		-n 'LFI' 'lfi-run -- ./build-lfi/src/opus_demo -d 48000 2 opus-benchdata/music_orig.opus /dev/null' \
-		-n 'LFI-stores' 'lfi-run -- ./build-lfi-stores/src/opus_demo -d 48000 2 opus-benchdata/music_orig.opus /dev/null' \
-		-n 'Native' './build-native/src/opus_demo -d 48000 2 opus-benchdata/music_orig.opus /dev/null'
+		-n 'opus-dec' './build-native/src/opus_demo -d 48000 2 opus-benchdata/music_orig.opus /dev/null'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR) opus-benchdata

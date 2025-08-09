@@ -85,8 +85,8 @@ CSV =   $(NAME_1) \
 define run_bench =
 	@echo "Running benchmark $(1): $(2)"; \
 	hyperfine --export-csv $(1) --runs $(RUNS) --warmup $(WARMUP) \
-		-n 'LFI' 'lfi-run -- ./build-lfi/lua $(2)' \
-		-n 'LFI-stores' 'lfi-run -- ./build-lfi-stores/lua $(2)' \
+		-n 'LFI' './build-lfi/lua $(2)' \
+		-n 'LFI-stores' './build-lfi-stores/lua $(2)' \
 		-n 'Native' './build-native/lua $(2)'
 endef
 

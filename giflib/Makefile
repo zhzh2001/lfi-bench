@@ -2,8 +2,8 @@
 include ../common.mk
 
 # Benchmark-specific configuration
-RUNS   ?= 5
-WARMUP ?= 1
+RUNS   ?= 10
+WARMUP ?= 2
 
 TARGET_DIR := giflib
 
@@ -39,9 +39,7 @@ bench: giftest.csv
 
 giftest.csv: build-native build-lfi build-lfi-stores image.gif
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv giftest.csv \
-		-n 'LFI' 'lfi-run -- build-lfi/gif2rgb image.gif > /dev/null' \
-		-n 'LFI-stores' 'lfi-run -- build-lfi-stores/gif2rgb image.gif > /dev/null' \
-		-n 'Native' 'build-native/gif2rgb image.gif > /dev/null'
+		-n 'giflib' 'build-native/gif2rgb image.gif > /dev/null'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR) image.gif giflib.tar.gz

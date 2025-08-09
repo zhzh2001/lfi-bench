@@ -1,9 +1,11 @@
-CC       := /opt/aarch64-lfi-clang/bin/clang
-CXX      := /opt/aarch64-lfi-clang/bin/clang++
-AS       := /opt/aarch64-lfi-clang/bin/clang
-AR       := /opt/aarch64-lfi-clang/bin/llvm-ar
-STRIP    := /opt/aarch64-lfi-clang/bin/llvm-strip
+CC       := /home/zheng/.clang/bin/clang
+CXX      := /home/zheng/.clang/bin/clang++
+AS       := /home/zheng/.clang/bin/clang
+AR       := /home/zheng/.clang/bin/llvm-ar
+STRIP    := /home/zheng/.clang/bin/llvm-strip
+
+CXXFLAGS := --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11
 
 include Makefile
 
-PREFIX   = /home/talg/repo/lfi-bench/benchmark-lib/aarch64-lfi-clang
+PREFIX   = ~/lfi-bench/benchmark-lib/aarch64-lfi-clang

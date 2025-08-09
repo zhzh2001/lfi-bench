@@ -2,12 +2,12 @@
 include ../common.mk
 
 # Benchmark-specific configuration
-RUNS   ?= 3
-WARMUP ?= 1
+RUNS   ?= 10
+WARMUP ?= 2
 
-LFI        ?= /opt/aarch64-lfi-clang
-LFI_STORES ?= /opt/aarch64-lfi-stores-clang
-NATIVE     ?= /opt/aarch64-native-clang
+LFI        = /home/zheng/.clang
+LFI_STORES = /home/zheng/.clang
+NATIVE     = /home/zheng/.clang
 
 TARGET_DIR := libvpx
 
@@ -18,17 +18,17 @@ $(TARGET_DIR):
 
 build-lfi: $(TARGET_DIR)
 	mkdir -p build-lfi
-	cd build-lfi && LDFLAGS="-static-pie" CROSS=aarch64-lfi-linux-musl- AR=$(LFI)/bin/llvm-ar CC=$(LFI)/bin/clang CXX=$(LFI)/bin/clang++ ../$(TARGET_DIR)/configure
+	cd build-lfi && CXXFLAGS="--gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11" LDFLAGS="--gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11" AR=$(LFI)/bin/llvm-ar CC=$(LFI)/bin/clang CXX=$(LFI)/bin/clang++ ../$(TARGET_DIR)/configure
 	make -C build-lfi -j $(JOBS)
 
 build-lfi-stores: $(TARGET_DIR)
 	mkdir -p build-lfi-stores
-	cd build-lfi-stores && LDFLAGS="-static-pie" CROSS=aarch64-lfi-linux-musl- AR=$(LFI_STORES)/bin/llvm-ar CC=$(LFI_STORES)/bin/clang CXX=$(LFI_STORES)/bin/clang++ ../$(TARGET_DIR)/configure
+	cd build-lfi-stores && CXXFLAGS="--gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11" LDFLAGS="--gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11" AR=$(LFI_STORES)/bin/llvm-ar CC=$(LFI_STORES)/bin/clang CXX=$(LFI_STORES)/bin/clang++ ../$(TARGET_DIR)/configure
 	make -C build-lfi-stores -j $(JOBS)
 
 build-native: $(TARGET_DIR)
 	mkdir -p build-native
-	cd build-native && LDFLAGS="-static-pie" CROSS=aarch64-unknown-linux-musl- AR=$(NATIVE)/bin/llvm-ar CC=$(NATIVE)/bin/clang CXX=$(NATIVE)/bin/clang++ ../$(TARGET_DIR)/configure
+	cd build-native && CFLAGS="-fsanitize=signed-integer-overflow,unsigned-integer-overflow -fsanitize-hw-support=0" CXXFLAGS="--gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11 -fsanitize=signed-integer-overflow,unsigned-integer-overflow -fsanitize-hw-support=0" LDFLAGS="--gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11 -fsanitize=signed-integer-overflow,unsigned-integer-overflow" AR=$(NATIVE)/bin/llvm-ar CC=$(NATIVE)/bin/clang CXX=$(NATIVE)/bin/clang++ ../$(TARGET_DIR)/configure
 	make -C build-native -j $(JOBS)
 
 vpx-benchdata:
@@ -40,9 +40,7 @@ bench: libvpx.csv
 
 libvpx.csv: vpx-benchdata build-native build-lfi build-lfi-stores
 	hyperfine --export-csv libvpx.csv --runs $(RUNS) --warmup $(WARMUP) \
-		-n 'LFI' 'lfi-run -- ./build-lfi/vpxdec --threads=$(THREADS) -o /dev/null vpx-benchdata/sample-30s.webm' \
-		-n 'LFI-stores' 'lfi-run -- ./build-lfi-stores/vpxdec --threads=$(THREADS) -o /dev/null vpx-benchdata/sample-30s.webm' \
-		-n 'Native' 'lfi-run -- ./build-native/vpxdec --threads=$(THREADS) -o /dev/null vpx-benchdata/sample-30s.webm'
+		-n 'libvpx' './build-native/vpxdec --threads=$(THREADS) -o /dev/null vpx-benchdata/sample-30s.webm'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR) vpx-benchdata

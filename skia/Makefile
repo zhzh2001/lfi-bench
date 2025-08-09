@@ -59,8 +59,8 @@ bench: skia-decode-jpg-png.csv
 skia-decode-jpg-png.csv: build-native/decode-benchmark build-lfi/decode-benchmark build-lfi-stores/decode-benchmark
 	cat image.* > /dev/null
 	hyperfine --export-csv skia-decode-jpg-png.csv --runs $(RUNS) --warmup $(WARMUP) \
-		-n 'LFI' 'lfi-run -p -- ./build-lfi/decode-benchmark 10' \
-		-n 'LFI-stores' 'lfi-run -p -- ./build-lfi-stores/decode-benchmark 10' \
+		-n 'LFI' './build-lfi/decode-benchmark 10' \
+		-n 'LFI-stores' './build-lfi-stores/decode-benchmark 10' \
 		-n 'Native' './build-native/decode-benchmark 10'
 
 clean:

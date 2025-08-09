@@ -2,8 +2,8 @@
 include ../common.mk
 
 # Benchmark-specific configuration
-RUNS   ?= 3
-WARMUP ?= 1
+RUNS   ?= 10
+WARMUP ?= 2
 
 TARGET_DIR := expat
 
@@ -34,9 +34,7 @@ bench: expat.csv
 
 expat.csv: build-native build-lfi build-lfi-stores
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv expat.csv \
-		-n 'LFI' 'lfi-run -- build-lfi/tests/runtests' \
-		-n 'LFI-stores' 'lfi-run -- build-lfi-stores/tests/runtests' \
-		-n 'Native' 'build-native/tests/runtests'
+		-n 'libexpat' 'build-native/tests/runtests'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR) libexpat

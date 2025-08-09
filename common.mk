@@ -1,10 +1,10 @@
 # common.mk - Shared configuration for all LFI benchmarks
 
 # Build configuration (benchmark-specific RUNS/WARMUP stay in individual Makefiles)
-JOBS := $(shell nproc)
+JOBS := 16
 
 #how many threads to use in benchmarks
-THREADS := 1
+THREADS := 8
 
 # Directory structure
 PARENT_DIR := $(shell dirname $(shell pwd))

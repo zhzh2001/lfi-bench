@@ -1,12 +1,15 @@
 [binaries]
-c = '/opt/aarch64-lfi-clang/bin/clang'
-cpp = '/opt/aarch64-lfi-clang/bin/clang++'
-as = '/opt/aarch64-lfi-clang/bin/clang'
-ar = '/opt/aarch64-lfi-clang/bin/llvm-ar'
-strip = '/opt/aarch64-lfi-clang/bin/llvm-strip'
+c = '/home/zheng/.clang/bin/clang'
+cpp = '/home/zheng/.clang/bin/clang++'
+as = '/home/zheng/.clang/bin/clang'
+ar = '/home/zheng/.clang/bin/llvm-ar'
+strip = '/home/zheng/.clang/bin/llvm-strip'
+
+[properties]
+cpp_args = '--gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11'
 
 [host_machine]
 system = 'linux'
-cpu_family = 'aarch64'
-cpu = 'aarch64'
+cpu_family = 'x86_64'
+cpu = 'x86_64'
 endian = 'little'

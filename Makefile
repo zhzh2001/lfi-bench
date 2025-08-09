@@ -109,6 +109,7 @@ clean:
 	for bench in $(BENCH) ; do \
 		$(MAKE) -C $$bench clean ; \
 	done
+	rm -r benchmark-lib/
 
 reset:
 	for bench in $(BENCH) ; do \

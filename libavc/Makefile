@@ -2,8 +2,8 @@
 include ../common.mk
 
 # Benchmark-specific configuration
-RUNS   ?= 3
-WARMUP ?= 0
+RUNS   ?= 10
+WARMUP ?= 2
 
 TARGET_DIR := libavc
 
@@ -58,9 +58,7 @@ libavc-decode.csv: build-lfi build-lfi-stores build-native test.h264 test.cfg
 	# pull test file into buffer cache
 	cat test.h264 > /dev/null
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv libavc-decode.csv \
-		-n 'LFI' 'lfi-run -- build-lfi/avcdec test.cfg' \
-		-n 'LFI-stores' 'lfi-run -- build-lfi-stores/avcdec test.cfg' \
-		-n 'Native' 'build-native/avcdec test.cfg'
+		-n 'libavc' 'build-native/avcdec test.cfg'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR) test.h264 test_download.mp4 test.cfg

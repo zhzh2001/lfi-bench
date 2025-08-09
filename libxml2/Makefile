@@ -2,8 +2,8 @@
 include ../common.mk
 
 # Benchmark-specific configuration
-RUNS   ?= 3
-WARMUP ?= 1
+RUNS   ?= 10
+WARMUP ?= 2
 
 CMAKE_FLAGS := -DLIBXML2_WITH_PYTHON=OFF -DCMAKE_BUILD_TYPE=Release
 TARGET_DIR := libxml2
@@ -46,9 +46,7 @@ bench: libxml2.csv
 
 libxml2.csv: build-benchmarks 
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv libxml2.csv \
-		-n 'LFI' 'lfi-run -p -- build-lfi-bench/xml-parse SwissProt.xml' \
-		-n 'LFI-stores' 'lfi-run -p -- build-lfi-stores-bench/xml-parse SwissProt.xml' \
-		-n 'Native' 'build-native-bench/xml-parse SwissProt.xml'
+		-n 'libxml2' 'build-native-bench/xml-parse example.xml'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR)

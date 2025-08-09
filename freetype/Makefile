@@ -2,8 +2,8 @@
 include ../common.mk
 
 # Benchmark-specific configuration
-RUNS   ?= 2
-WARMUP ?= 0
+RUNS   ?= 10
+WARMUP ?= 2
 
 TARGET_DIR := freetype
 
@@ -39,9 +39,7 @@ bench: freetype-benchmark.csv
 
 freetype-benchmark.csv: build-benchmarks font.ttf
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv freetype-benchmark.csv \
-		-n 'LFI' 'lfi-run -p -- build-lfi-bench/benchmark font.ttf 200' \
-		-n 'LFI-stores' 'lfi-run -p -- build-lfi-stores-bench/benchmark font.ttf 200' \
-		-n 'Native' 'build-native-bench/benchmark font.ttf 200'
+		-n 'freetype' 'build-native-bench/benchmark font.ttf 200'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR)

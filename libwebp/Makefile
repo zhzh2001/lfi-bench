@@ -2,8 +2,8 @@
 include ../common.mk
 
 # Benchmark-specific configuration
-RUNS   ?= 1
-WARMUP ?= 1
+RUNS   ?= 10
+WARMUP ?= 2
 
 TARGET_DIR := libwebp
 
@@ -39,15 +39,11 @@ bench: webp-decode.csv webp-encode.csv
 
 webp-decode.csv: build-native build-lfi build-lfi-stores image.webp
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv webp-decode.csv \
-		-n 'LFI' 'lfi-run -- build-lfi/dwebp image.webp -o /dev/null' \
-		-n 'LFI-stores' 'lfi-run -- build-lfi-stores/dwebp image.webp -o /dev/null' \
-		-n 'Native' 'build-native/dwebp image.webp -o /dev/null'
+		-n 'webp-dec' 'build-native/dwebp image.webp -o /dev/null'
 
 webp-encode.csv: build-native build-lfi build-lfi-stores image.png
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv webp-encode.csv \
-		-n 'LFI' 'lfi-run -- build-lfi/cwebp image.png -o /dev/null' \
-		-n 'LFI-stores' 'lfi-run -- build-lfi-stores/cwebp image.png -o /dev/null' \
-		-n 'Native' 'build-native/cwebp image.png -o /dev/null'
+		-n 'webp-enc' 'build-native/cwebp image.png -o /dev/null'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR) image.png image.webp

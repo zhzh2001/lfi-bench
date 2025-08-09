@@ -2,8 +2,8 @@
 include ../common.mk
 
 # Benchmark-specific configuration
-RUNS   ?= 3
-WARMUP ?= 1
+RUNS   ?= 10
+WARMUP ?= 2
 
 TARGET_DIR := libhevc
 
@@ -13,11 +13,11 @@ $(TARGET_DIR):
 	git clone https://github.com/ittiam-systems/libhevc.git
 
 build-lfi: $(TARGET_DIR)
-	cmake -S $(TARGET_DIR) $(CMAKE_FLAGS) -B build-lfi -DCMAKE_TOOLCHAIN_FILE=$(LFI_TOOLCHAIN) --install-prefix $(LFI_INSTALL) -DSYSTEM_PROCESSOR="aarch64" -DSYSTEM_NAME="Linux" -DCMAKE_BUILD_TYPE=Release
+	cmake -S $(TARGET_DIR) $(CMAKE_FLAGS) -B build-lfi -DCMAKE_TOOLCHAIN_FILE=$(LFI_TOOLCHAIN) --install-prefix $(LFI_INSTALL) -DSYSTEM_PROCESSOR="x86" -DSYSTEM_NAME="Linux" -DCMAKE_BUILD_TYPE=Release
 	cmake --build build-lfi -j $(JOBS)
 
 build-lfi-stores: $(TARGET_DIR)
-	cmake -S $(TARGET_DIR) $(CMAKE_FLAGS) -B build-lfi-stores -DCMAKE_TOOLCHAIN_FILE=$(STORES_TOOLCHAIN) --install-prefix $(STORES_INSTALL) -DSYSTEM_PROCESSOR="aarch64" -DSYSTEM_NAME="Linux" -DCMAKE_BUILD_TYPE=Release
+	cmake -S $(TARGET_DIR) $(CMAKE_FLAGS) -B build-lfi-stores -DCMAKE_TOOLCHAIN_FILE=$(STORES_TOOLCHAIN) --install-prefix $(STORES_INSTALL) -DSYSTEM_PROCESSOR="x86" -DSYSTEM_NAME="Linux" -DCMAKE_BUILD_TYPE=Release
 	cmake --build build-lfi-stores -j $(JOBS)
 
 build-native: $(TARGET_DIR)
@@ -38,14 +38,10 @@ example.hevc:
 bench-encode: build-lfi build-lfi-stores build-native example.yuv
 	cat example.* > /dev/null #warmup cache
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv hevcenc.csv \
-		-n 'LFI' 'lfi-run -- build-lfi/hevcenc --input example.yuv --output /dev/null --src_width 352 --src_height 288 --num_frames_to_encode 30' \
-		-n 'LFI-stores' 'lfi-run -- build-lfi-stores/hevcenc --input example.yuv --output /dev/null --src_width 352 --src_height 288 --num_frames_to_encode 30' \
-		-n 'Native' 'build-native/hevcenc --input example.yuv --output /dev/null --src_width 352 --src_height 288 --num_frames_to_encode 30'
+		-n 'libhevc-enc' 'build-native/hevcenc --input example.yuv --output /dev/null --src_width 352 --src_height 288 --num_frames_to_encode 30'
 bench: bench-encode example.hevc
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv hevcdec.csv \
-		-n 'LFI' 'lfi-run -- build-lfi/hevcdec --input example.hevc --output /dev/null' \
-		-n 'LFI-stores' 'lfi-run -- build-lfi-stores/hevcdec --input example.hevc --output /dev/null' \
-		-n 'Native' 'build-native/hevcdec --input example.hevc --output /dev/null'
+		-n 'libhevc-dec' 'build-native/hevcdec --input example.hevc --output /dev/null'
 
 clean:
 	rm -f *.csv

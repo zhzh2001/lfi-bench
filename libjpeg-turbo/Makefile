@@ -2,8 +2,8 @@
 include ../common.mk
 
 # Benchmark-specific configuration
-RUNS   ?= 1
-WARMUP ?= 0
+RUNS   ?= 10
+WARMUP ?= 2
 
 TARGET_DIR := libjpeg-turbo
 
@@ -48,9 +48,7 @@ decode-bench: libjpeg-decode.csv
 libjpeg-decode.csv: build-benchmarks
 	cat image.jpg test.jpeg > /dev/null
 	hyperfine --export-csv libjpeg-decode.csv --runs $(RUNS) --warmup $(WARMUP) \
-		-n 'LFI' 'lfi-run -p -- ./build-lfi-bench/decode-benchmark 100' \
-		-n 'LFI-stores' 'lfi-run -p -- ./build-lfi-stores-bench/decode-benchmark 100' \
-		-n 'Native' './build-native-bench/decode-benchmark 100'
+		-n 'libjpeg' './build-native-bench/decode-benchmark 100'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR)
