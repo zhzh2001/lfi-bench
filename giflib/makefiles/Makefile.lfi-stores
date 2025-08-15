@@ -1,8 +1,8 @@
-CC     := /home/zheng/.clang/bin/clang
-CXX    := /home/zheng/.clang/bin/clang++
-AS     := /home/zheng/.clang/bin/clang
-AR     := /home/zheng/.clang/bin/llvm-ar
-STRIP  := /home/zheng/.clang/bin/llvm-strip
+CC     := /users/paleshel/.local/bin/clang
+CXX    := /users/paleshel/.local/bin/clang++
+AS     := /users/paleshel/.local/bin/clang
+AR     := /users/paleshel/.local/bin/llvm-ar
+STRIP  := /users/paleshel/.local/bin/llvm-strip
 
 CXXFLAGS := --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11
 

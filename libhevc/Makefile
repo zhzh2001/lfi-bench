@@ -35,16 +35,16 @@ example.yuv:
 example.hevc:
 	ffmpeg -f rawvideo -pix_fmt yuv420p -s:v 3840x2160 -r 30 -i example.yuv -c:v libx265 -preset medium -crf 23 example.hevc
 
-bench-encode: build-lfi build-lfi-stores build-native example.yuv
-	cat example.* > /dev/null #warmup cache
+bench-encode: build-lfi build-lfi-stores build-native
+	cat ~/spec/625.x264_s/BuckBunny.yuv > /dev/null #warmup cache
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv hevcenc.csv \
-		-n 'libhevc-enc' 'build-native/hevcenc --input example.yuv --output /dev/null --src_width 352 --src_height 288 --num_frames_to_encode 30'
-bench: bench-encode example.hevc
-	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv hevcdec.csv \
-		-n 'libhevc-dec' 'build-native/hevcdec --input example.hevc --output /dev/null'
+		-n 'libhevc-enc' 'build-native/hevcenc --input ~/spec/625.x264_s/BuckBunny.yuv --output /dev/null --src_width 1280 --src_height 720 --num_frames_to_encode 60'
+bench: bench-encode
+# 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv hevcdec.csv \
+# 		-n 'libhevc-dec' 'build-native/hevcdec --input example.hevc --output /dev/null'
 
 clean:
 	rm -f *.csv
-	rm -rf $(BUILD_DIRS) $(TARGET_DIR) example.yuv example.hevc
+	rm -rf $(BUILD_DIRS) $(TARGET_DIR) #example.yuv example.hevc
 
 .PHONY: all bench clean install example-data

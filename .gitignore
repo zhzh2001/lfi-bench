@@ -16,3 +16,6 @@ libpng/libpng/
 libtiff/libtiff/
 libxml2/libxml2/
 results/*
+*.opus
+*.wav
+*.webm

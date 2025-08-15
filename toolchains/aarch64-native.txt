@@ -1,14 +1,14 @@
 [binaries]
-c = '/home/zheng/.clang/bin/clang'
-as = '/home/zheng/.clang/bin/clang'
-cpp = '/home/zheng/.clang/bin/clang++'
-ar = '/home/zheng/.clang/bin/llvm-ar'
-strip = '/home/zheng/.clang/bin/llvm-strip'
+c = '/users/paleshel/.local/bin/clang'
+as = '/users/paleshel/.local/bin/clang'
+cpp = '/users/paleshel/.local/bin/clang++'
+ar = '/users/paleshel/.local/bin/llvm-ar'
+strip = '/users/paleshel/.local/bin/llvm-strip'
 
 [properties]
-c_args = '-fsanitize=signed-integer-overflow,unsigned-integer-overflow -fsanitize-hw-support=0'
+c_args = '-fsanitize=signed-integer-overflow,unsigned-integer-overflow -fsanitize-hw-support=2 -mllvm --disable-instcombine -mllvm --optimize-after-metadata-to-intrinsic'
 c_link_args = '-fsanitize=signed-integer-overflow,unsigned-integer-overflow'
-cpp_args = '--gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11 -fsanitize=signed-integer-overflow,unsigned-integer-overflow -fsanitize-hw-support=0'
+cpp_args = '-fsanitize=signed-integer-overflow,unsigned-integer-overflow -fsanitize-hw-support=2 -mllvm --disable-instcombine -mllvm --optimize-after-metadata-to-intrinsic'
 cpp_link_args = '-fsanitize=signed-integer-overflow,unsigned-integer-overflow'
 
 [host_machine]

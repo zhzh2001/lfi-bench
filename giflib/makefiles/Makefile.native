@@ -1,11 +1,11 @@
-CC     := /home/zheng/.clang/bin/clang
-CXX    := /home/zheng/.clang/bin/clang++
-AS     := /home/zheng/.clang/bin/clang
-AR     := /home/zheng/.clang/bin/llvm-ar
-STRIP  := /home/zheng/.clang/bin/llvm-strip
+CC     := /users/paleshel/.local/bin/clang
+CXX    := /users/paleshel/.local/bin/clang++
+AS     := /users/paleshel/.local/bin/clang
+AR     := /users/paleshel/.local/bin/llvm-ar
+STRIP  := /users/paleshel/.local/bin/llvm-strip
 
-CFLAGS   := -fsanitize=signed-integer-overflow,unsigned-integer-overflow -fsanitize-hw-support=0
-CXXFLAGS := --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11 -fsanitize=signed-integer-overflow,unsigned-integer-overflow -fsanitize-hw-support=0
+CFLAGS   := -fsanitize=signed-integer-overflow,unsigned-integer-overflow -fsanitize-hw-support=2 -mllvm --disable-instcombine -mllvm --optimize-after-metadata-to-intrinsic
+CXXFLAGS := -fsanitize=signed-integer-overflow,unsigned-integer-overflow -fsanitize-hw-support=2 -mllvm --disable-instcombine -mllvm --optimize-after-metadata-to-intrinsic
 LDFLAGS  := -fsanitize=signed-integer-overflow,unsigned-integer-overflow
 
 include Makefile

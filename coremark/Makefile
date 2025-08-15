@@ -28,7 +28,7 @@ bench: coremark.csv
 
 coremark.csv: build-native build-lfi build-lfi-stores
 	hyperfine --export-csv coremark.csv --runs $(RUNS) --warmup $(WARMUP) \
-		-n 'coremark' './build-native/coremark 0x0 0x0 0x66 20000 7 1 2000'
+		-n 'coremark' './build-native/coremark 0x0 0x0 0x66 100000 7 1 2000'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR)

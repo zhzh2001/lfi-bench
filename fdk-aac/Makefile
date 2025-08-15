@@ -39,7 +39,7 @@ bench: fdk-aac-encode.csv
 
 fdk-aac-encode.csv: fdk-aac-benchdata build-native build-lfi build-lfi-stores
 	hyperfine --export-csv fdk-aac-encode.csv --runs $(RUNS) --warmup $(WARMUP) \
-		-n 'fdk-aac-encode' './build-native/aac-enc -r 128000 fdk-aac-benchdata/music_medium.wav /dev/null'
+		-n 'fdk-aac-encode' './build-native/aac-enc -r 128000 ../tearsofsteel-surround.wav /dev/null'
 
 clean:
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR) fdk-aac-benchdata

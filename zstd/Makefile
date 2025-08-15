@@ -26,9 +26,9 @@ build-native: $(TARGET_DIR)
 
 bench: build-native build-lfi-stores build-lfi bigfile.txt
 	mkdir -p /tmp/$(USER)
-	build-native/programs/zstd -f bigfile.txt -o bigfile.txt.zst
+# 	build-native/programs/zstd -f ~/spec/625.x264_s/BuckBunny.yuv -o BuckBunny.zst
 	hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv zstd-decompress.csv \
-		-n 'zstd' 'build-native/programs/zstd -df bigfile.txt.zst -o /tmp/$(USER)/test_native_out.txt'
+		-n 'zstd' 'build-native/programs/zstd -b5 -f ~/spec/625.x264_s/BuckBunny.yuv -o BuckBunny.zst'
 	# mkdir -p /tmp/$(USER)
 	# # hyperfine --runs $(RUNS) --warmup $(WARMUP) --export-csv zstd-compress.csv \
 	# # 	-n 'LFI' 'build-lfi/programs/zstd -f bigfile.txt -o /tmp/$(USER)/test_lfi.zst' \
@@ -36,7 +36,7 @@ bench: build-native build-lfi-stores build-lfi bigfile.txt
 	# # 	-n 'Native' 'build-native/programs/zstd -f bigfile.txt -o /tmp/$(USER)/test_native.zst'
 
 clean:
-	rm -f bigfile.txt.zst *.csv
+	rm -f BuckBunny.zst *.csv
 	rm -f /tmp/$(USER)/test_*.zst /tmp/$(USER)/test_*_out.txt
 	rm -rf $(BUILD_DIRS) $(TARGET_DIR)
 

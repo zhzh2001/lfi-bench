@@ -3,11 +3,11 @@ set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR x86)
 
 # Toolchain binaries
-set(CMAKE_C_COMPILER /home/zheng/.clang/bin/clang)
-set(CMAKE_CXX_COMPILER /home/zheng/.clang/bin/clang++)
-set(CMAKE_ASM_COMPILER /home/zheng/.clang/bin/clang)
-set(CMAKE_AR /home/zheng/.clang/bin/llvm-ar)
-set(CMAKE_STRIP /home/zheng/.clang/bin/llvm-strip)
+set(CMAKE_C_COMPILER /users/paleshel/.local/bin/clang)
+set(CMAKE_CXX_COMPILER /users/paleshel/.local/bin/clang++)
+set(CMAKE_ASM_COMPILER /users/paleshel/.local/bin/clang)
+set(CMAKE_AR /users/paleshel/.local/bin/llvm-ar)
+set(CMAKE_STRIP /users/paleshel/.local/bin/llvm-strip)
 
 set(CMAKE_CXX_FLAGS "--gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/11")
 
